@@ -1,7 +1,7 @@
 .profile__info {
   display: grid;
-  grid-template-columns: max-content 1fr ;
-  grid-template-rows:  max-content 1fr ;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows:  max-content 1fr;
   grid-template-areas:
   "profile__info-title profile__button"
   "profile__info-subtitle .";
