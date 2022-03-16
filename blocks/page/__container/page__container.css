@@ -13,5 +13,7 @@
   .page__container {
     padding-top: 28px;
     padding-bottom: 36px;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
