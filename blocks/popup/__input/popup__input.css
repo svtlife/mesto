@@ -9,6 +9,8 @@
   line-height: 17px;
   font-family: 'Inter', sans-serif;
   height: 27px;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 @media screen and (max-width: 800px) {
