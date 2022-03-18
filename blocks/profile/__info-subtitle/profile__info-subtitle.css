@@ -1,11 +1,12 @@
 .profile__info-subtitle {
-  font-family: 'Inter-Regular', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 18px;
   line-height: 22px;
   color: #FFFFFF;
   max-width: 336px;
   margin: 0;
   grid-area: profile__info-subtitle;
+  font-weight: 400;
 }
 
 @media screen and (max-width: 1050px) {
