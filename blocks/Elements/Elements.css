@@ -1,4 +1,4 @@
-.Elements {
+.elements {
   display: flex;
   flex-wrap: wrap;
   max-width: 880px;
@@ -11,7 +11,7 @@
 }
 
 @media screen and (max-width: 950px) {
-  .Elements {
+  .elements {
     padding-top: 36px;
     padding-bottom: 48px;
   }

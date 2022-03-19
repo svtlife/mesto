@@ -7,10 +7,11 @@
   width: 358px;
   font-size: 14px;
   line-height: 17px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', Arial, sans-serif;
   height: 27px;
   padding: 0;
   box-sizing: border-box;
+  font-weight: 400;
 }
 
 @media screen and (max-width: 800px) {

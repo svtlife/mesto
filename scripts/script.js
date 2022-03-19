@@ -1,33 +1,37 @@
 const popupElement = document.querySelector('.popup');
 const profileButton = document.querySelector('.profile__button');
 const closeButton = popupElement.querySelector('.popup__close');
-
-function openPopup() {
-  popupElement.classList.add('popup__opened');
-  nameInput.value = document.querySelector(".profile__info-title").textContent;
-  jobInput.value = document.querySelector(".profile__info-subtitle").textContent;
-}
-
-function closePopup() {
-  popupElement.classList.remove('popup__opened');
-}
-
-profileButton.addEventListener('click', openPopup);
-
-closeButton.addEventListener('click', closePopup);
-
-
-
-
-
 let formElement = document.querySelector('.popup__container');
-let nameInput = document.querySelector('.popup__input_name');
-let jobInput = document.querySelector('.popup__input_job');
+let nameInput = document.querySelector('.popup__input_type_name');
+let jobInput = document.querySelector('.popup__input_type_job');
+let profileInfoTitle = document.querySelector(".profile__info-title");
+let prorifleInfoSubtitle = document.querySelector(".profile__info-subtitle");
 
-function formSubmitHandler(evt) {
-  evt.preventDefault();
-  document.querySelector(".profile__info-title").textContent = nameInput.value;
-  document.querySelector(".profile__info-subtitle").textContent = jobInput.value;
+
+
+
+function openPopup() { // открывает popup
+  popupElement.classList.add('popup_opened');
+  nameInput.value = profileInfoTitle.textContent;
+  jobInput.value = prorifleInfoSubtitle.textContent;
+}
+
+
+function closePopup() { // закрывает popup
+  popupElement.classList.remove('popup_opened');
+}
+
+
+function saveSubmitForm(evt) { // введённые пользователем  новые данные (nameInput.value и jobInput.value)
+  evt.preventDefault();        // заменяются вместо старых данных в profile__info-title и profile__info-subtitle
+  profileInfoTitle.textContent = nameInput.value;
+  prorifleInfoSubtitle.textContent = jobInput.value;
   closePopup();
 }
-formElement.addEventListener('submit', formSubmitHandler);
+
+
+
+
+profileButton.addEventListener('click', openPopup);
+closeButton.addEventListener('click', closePopup);
+formElement.addEventListener('submit', saveSubmitForm);
