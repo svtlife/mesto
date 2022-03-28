@@ -26,6 +26,7 @@
 @import url(../blocks/popup/popup.css);
 @import url(../blocks/popup/_add/popup_add.css);
 @import url(../blocks/popup/_zoom/popup_zoom.css);
+@import url(../blocks/popup/_profile/popup_profile.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
 @import url(../blocks/popup/__zoom-container/popup__zoom-container.css);
 @import url(../blocks/popup/__group/popup__group.css);
