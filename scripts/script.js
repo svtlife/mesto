@@ -19,17 +19,39 @@ const img = popupElementZoom.querySelector('.popup__image');
 const text = popupElementZoom.querySelector('.popup__signature')
 const closeZoomButton = document.querySelector('.popup__close-zoom');
 const popupElementProfile = document.querySelector('.popup_profile');
+const popups = Array.from(document.querySelectorAll('.popup'));
 
+
+/* Функция для показа ошибок */
+function clearFormErrors(formElement) {
+  const inputList = Array.from(formElement.querySelectorAll(".popup__input"));
+  const submitButton = formElement.querySelector('.popup__button');
+
+  inputList.forEach(inputElement => {
+    hideInputError(formElement, inputElement, 'popup__input_type_error', 'popup__error_visible');
+  });
+
+  toggleButtonState(inputList, submitButton, 'popup__button_disabled');
+}
+
+function escapeHandler(evt) {
+  if (evt.key === 'Escape') {
+    const popup = document.querySelector('.popup_opened');
+    closePopup(popup);
+  }
+}
 
 /* попап */
 
 function openPopup (popup) { // открывает popup
   popup.classList.add('popup_opened');
+  document.addEventListener('keydown', escapeHandler);
 }
 
 
  function closePopup(popup) { // закрывает popup
   popup.classList.remove('popup_opened');
+  document.removeEventListener('keydown', escapeHandler);
 }
 
 
@@ -91,6 +113,7 @@ profileButton.addEventListener('click', function() {
   openPopup(popupElementProfile);
   nameInput.value = profileInfoTitle.textContent;
   jobInput.value = prorifleInfoSubtitle.textContent;
+  clearFormErrors(popupElementProfile);
 });
 
 closeButton.addEventListener('click', function() {
@@ -112,3 +135,12 @@ formElementadd.addEventListener('submit', saveSubmitAddForm);
 closeZoomButton.addEventListener('click', function() {
   closePopup(popupElementZoom)
 })
+
+/* Закрытие попапов по клику на темный фон */
+popups.forEach(popup => {
+  popup.addEventListener('click', evt => {
+    if (evt.target.classList.contains('popup')) {
+      closePopup(popup);
+    }
+  });
+});
