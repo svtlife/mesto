@@ -14,37 +14,37 @@ const toggleButtonState = (inputList, submitButton, inactiveButtonClass) => {
   }
 };
 
-function showInputError(formElement, inputElement, inputErrorClass, errorClass, errorMessage) {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+function showInputError(profileEditFormElement, inputElement, inputErrorClass, errorClass, errorMessage) {
+  const errorElement = profileEditFormElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add(inputErrorClass);
   errorElement.classList.add(errorClass);
   errorElement.textContent = errorMessage;
 };
 
-const hideInputError = (formElement, inputElement, inputErrorClass, errorClass) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+const hideInputError = (profileEditFormElement, inputElement, inputErrorClass, errorClass) => {
+  const errorElement = profileEditFormElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.remove(inputErrorClass);
   errorElement.classList.remove(errorClass);
   errorElement.textContent = '';
 };
 
-const isValid = (formElement, inputElement, inputErrorClass, errorClass) => {
+const isValid = (profileEditFormElement, inputElement, inputErrorClass, errorClass) => {
   if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputErrorClass, errorClass, inputElement.validationMessage);
+    showInputError(profileEditFormElement, inputElement, inputErrorClass, errorClass, inputElement.validationMessage);
   } else {
-    hideInputError(formElement, inputElement, inputErrorClass, errorClass);
+    hideInputError(profileEditFormElement, inputElement, inputErrorClass, errorClass);
   }
 }
 
-function setEventListeners(formElement, inputSelector, inputErrorClass, errorClass, submitButtonSelector, inactiveButtonClass) {
-  const inputList = Array.from(formElement.querySelectorAll(inputSelector));
-  const submitButton = formElement.querySelector(submitButtonSelector);
+function setEventListeners(profileEditFormElement, inputSelector, inputErrorClass, errorClass, submitButtonSelector, inactiveButtonClass) {
+  const inputList = Array.from(profileEditFormElement.querySelectorAll(inputSelector));
+  const submitButton = profileEditFormElement.querySelector(submitButtonSelector);
 
   toggleButtonState(inputList, submitButton, inactiveButtonClass);
 
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
-      isValid(formElement, inputElement, inputErrorClass, errorClass);
+      isValid(profileEditFormElement, inputElement, inputErrorClass, errorClass);
       toggleButtonState(inputList, submitButton, inactiveButtonClass);
     });
   });
@@ -52,8 +52,8 @@ function setEventListeners(formElement, inputSelector, inputErrorClass, errorCla
 
 function enableValidation(validParams) {
   const forms = Array.from(document.querySelectorAll(validParams.formSelector));
-  forms.forEach(formElement => setEventListeners(
-    formElement,
+  forms.forEach(profileEditFormElement => setEventListeners(
+    profileEditFormElement,
     validParams.inputSelector,
     validParams.inputErrorClass,
     validParams.errorClass,

@@ -1,40 +1,40 @@
 const popupElement = document.querySelector('.popup');
 const profileButton = document.querySelector('.profile__button');
 const closeButton = popupElement.querySelector('.popup__close');
-const formElement = document.querySelector('.popup__container');
+const profileEditFormElement = document.querySelector('.popup__container');
 const nameInput = document.querySelector('.popup__input_type_name');
 const jobInput = document.querySelector('.popup__input_type_job');
 const profileInfoTitle = document.querySelector(".profile__info-title");
 const prorifleInfoSubtitle = document.querySelector(".profile__info-subtitle");
 const popupElementAdd = document.querySelector('.popup_add');
-const profileaddButton = document.querySelector('.profile__add-button');
-const closeaddButton = document.querySelector('.popup__close_add');
-const formElementadd = document.querySelector('.popup__container_add');
+const profileAddButton = document.querySelector('.profile__add-button');
+const closeAddButton = document.querySelector('.popup__close_add');
+const formElementAdd = document.querySelector('.popup__container_add');
 const titleInput = document.querySelector('.popup__input_type_title');
 const linkInput = document.querySelector('.popup__input_type_link')
 const elementList = document.querySelector('.elements');
 const elementTemplate = document.querySelector('.element-template').content;
 const popupElementZoom = document.querySelector('.popup_zoom');
-const img = popupElementZoom.querySelector('.popup__image');
-const text = popupElementZoom.querySelector('.popup__signature')
+const popupImage = popupElementZoom.querySelector('.popup__image');
+const popupText = popupElementZoom.querySelector('.popup__signature')
 const closeZoomButton = document.querySelector('.popup__close-zoom');
 const popupElementProfile = document.querySelector('.popup_profile');
 const popups = Array.from(document.querySelectorAll('.popup'));
 
 
 /* Функция для показа ошибок */
-function clearFormErrors(formElement) {
-  const inputList = Array.from(formElement.querySelectorAll(".popup__input"));
-  const submitButton = formElement.querySelector('.popup__button');
+function clearFormErrors(profileEditFormElement) {
+  const inputList = Array.from(profileEditFormElement.querySelectorAll(".popup__input"));
+  const submitButton = profileEditFormElement.querySelector('.popup__button');
 
   inputList.forEach(inputElement => {
-    hideInputError(formElement, inputElement, 'popup__input_type_error', 'popup__error_visible');
+    hideInputError(profileEditFormElement, inputElement, 'popup__input_type_error', 'popup__error_visible');
   });
 
   toggleButtonState(inputList, submitButton, 'popup__button_disabled');
 }
 
-function escapeHandler(evt) {
+function handleCloseOnEscape(evt) {
   if (evt.key === 'Escape') {
     const popup = document.querySelector('.popup_opened');
     closePopup(popup);
@@ -45,13 +45,13 @@ function escapeHandler(evt) {
 
 function openPopup (popup) { // открывает popup
   popup.classList.add('popup_opened');
-  document.addEventListener('keydown', escapeHandler);
+  document.addEventListener('keydown', handleCloseOnEscape);
 }
 
 
  function closePopup(popup) { // закрывает popup
   popup.classList.remove('popup_opened');
-  document.removeEventListener('keydown', escapeHandler);
+  document.removeEventListener('keydown', handleCloseOnEscape);
 }
 
 
@@ -74,9 +74,9 @@ function createCard(name, link) {
   cardImg.src = link;
   cardImg.alt = name;
   cardImg.addEventListener('click', () => {
-    img.src = cardImg.src;
-    img.alt = cardImg.alt;
-    text.textContent = cardImg.alt;
+    popupImage.src = cardImg.src;
+    popupImage.alt = cardImg.alt;
+    popupText.textContent = cardImg.alt;
     openPopup(popupElementZoom);
   });
 
@@ -110,27 +110,28 @@ initialCards.forEach(function(item) {
 
 /* Кнопки */
 profileButton.addEventListener('click', function() {
-  openPopup(popupElementProfile);
   nameInput.value = profileInfoTitle.textContent;
   jobInput.value = prorifleInfoSubtitle.textContent;
   clearFormErrors(popupElementProfile);
+  openPopup(popupElementProfile);
 });
 
 closeButton.addEventListener('click', function() {
   closePopup(popupElementProfile)
 });
 
-formElement.addEventListener('submit', saveSubmitForm);
+profileEditFormElement.addEventListener('submit', saveSubmitForm);
 
-profileaddButton.addEventListener('click', function() {
+profileAddButton.addEventListener('click', function() {
+  clearFormErrors(popupElementAdd);
   openPopup(popupElementAdd)
 })
 
-closeaddButton.addEventListener('click', function() {
+closeAddButton.addEventListener('click', function() {
   closePopup(popupElementAdd)
 })
 
-formElementadd.addEventListener('submit', saveSubmitAddForm);
+formElementAdd.addEventListener('submit', saveSubmitAddForm);
 
 closeZoomButton.addEventListener('click', function() {
   closePopup(popupElementZoom)

@@ -1,6 +1,5 @@
 .popup__error {
   margin-top: 5px;
-  margin-left: 36px;
   color: red;
   font-size: 12px;
   line-height: 15px;
@@ -9,5 +8,5 @@
   opacity: 0;
   transition: opacity .1s ease;
   overflow: hidden;
-  height: 28px;
+  height: 30px;
 }
