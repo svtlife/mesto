@@ -40,27 +40,19 @@ const newPlaceFormValidator = new FormValidator(
   newPlaceFormElement
 );
 
+/* Функция создания карточки  */
+const createCard = (name, link) => {
+  const card = new Card(name, link, ".element-template");
+  return card.generateCard();
+};
+
 /* Загрузка 6 карточек из массива */
 initialCards.forEach((item) => {
   const cardElement = createCard(item.name, item.link);
   elementList.append(cardElement);
 });
 
-/* Функция создания карточки  */
-function createCard(name, link) {
-  const card = new Card(name, link, ".element-template");
-  return card.generateCard();
-}
-
-/* Закрытие попапа на esc */
-function handleCloseOnEscape(evt) {
-  if (evt.key === "Escape") {
-    const popup = document.querySelector(".popup_opened");
-    closePopup(popup);
-  }
-}
-
-/* сохранить add form  */
+/* сохранить profile form  */
 function saveSubmitForm(evt) {
   // введённые пользователем  новые данные (nameInput.value и jobInput.value)
   evt.preventDefault(); // заменяются вместо старых данных в profile__info-title и profile__info-subtitle
@@ -73,9 +65,9 @@ function saveSubmitForm(evt) {
 function saveSubmitAddForm(evt) {
   evt.preventDefault();
   elementList.prepend(createCard(titleInput.value, linkInput.value));
-  closePopup(popupElementAdd);
   titleInput.value = "";
   linkInput.value = "";
+  closePopup(popupElementAdd);
 }
 
 /*  Попап редактирования профиля */
