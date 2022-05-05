@@ -1,11 +1,11 @@
 export class FormValidator {
-  constructor(enableValidation, profileEditFormElement) {
+  constructor(selectValidationParameters, profileEditFormElement) {
     this._profileEditFormElement = profileEditFormElement;
-    this._inputList = Array.from(profileEditFormElement.querySelectorAll(enableValidation.inputSelector));
-    this._submitButton = profileEditFormElement.querySelector(enableValidation.submitButtonSelector);
-    this._inactiveButtonClass = enableValidation.inactiveButtonClass;
-    this._inputErrorClass = enableValidation.inputErrorClass;
-    this._errorClass = enableValidation.errorClass;
+    this._inputList = Array.from(profileEditFormElement.querySelectorAll(selectValidationParameters.inputSelector));
+    this._submitButton = profileEditFormElement.querySelector(selectValidationParameters.submitButtonSelector);
+    this._inactiveButtonClass = selectValidationParameters.inactiveButtonClass;
+    this._inputErrorClass = selectValidationParameters.inputErrorClass;
+    this._errorClass = selectValidationParameters.errorClass;
   }
 
   _hasInvalidInput() {
@@ -56,7 +56,7 @@ export class FormValidator {
     });
   }
 
-  enableCardValidation() {
+  enableValidation() {
     this._setEventListeners();
   }
 
