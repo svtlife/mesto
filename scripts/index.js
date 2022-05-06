@@ -74,7 +74,7 @@ function saveSubmitAddForm(evt) {
 profileButton.addEventListener("click", function () {
   nameInput.value = profileInfoTitle.textContent;
   jobInput.value = prorifleInfoSubtitle.textContent;
-  profileFormValidator.clearFormErrors;
+  profileFormValidator.clearErrors();
   openPopup(popupElementProfile);
 });
 
