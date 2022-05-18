@@ -9,8 +9,8 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 import {
   validationConfig,
-  /* profileInfoTitle,
-  prorifleInfoSubtitle, */
+  profileInfoTitle,
+  prorifleInfoSubtitle,
   profileFormElement,
   newPlaceFormElement,
   nameInput,
@@ -21,8 +21,8 @@ import {
 
 // обьект User info
 const userData = new UserInfo({
-  nameSelector: ".profile__info-title",
-  jobSelector: ".profile__info-subtitle",
+  name: profileInfoTitle,
+  job: prorifleInfoSubtitle,
 });
 
 // секция Card list
@@ -64,8 +64,8 @@ const cardFromValidator = new FormValidator(
 );
 
 // Functions
-const createCardElement = function (data) {
-  return new Card(data, ".element-template", () =>
+const createCardElement = function (data, cardSelector) {
+  return new Card(data, cardSelector, () =>
     cardPreviewPopup.open(data)
   ).createCard();
 };
