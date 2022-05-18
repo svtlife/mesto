@@ -4,18 +4,21 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="pages/index.css" />
     <title>Mesto</title>
   </head>
   <body class="page">
     <div class="page__container">
       <header class="header">
-        <img src="images/Logo.svg" class="header__logo" alt="Место" />
+        <img
+          src="<%=require('./images/Logo.svg')%>"
+          class="header__logo"
+          alt="Место"
+        />
       </header>
       <main class="content">
         <section class="profile">
           <img
-            src="images/image.jpg"
+            src="<%=require('./images/image.jpg')%>"
             class="profile__avatar"
             alt="фото аватара"
           />
@@ -49,7 +52,7 @@
             class="popup__input popup__input_type_name"
             id="profile-name"
             type="text"
-            name="profile-name"
+            name="name"
             placeholder="Имя"
             required
             minlength="2"
@@ -60,7 +63,7 @@
             class="popup__input popup__input_type_job"
             id="profile-job"
             type="text"
-            name="profile-job"
+            name="job"
             placeholder="О себе"
             required
             minlength="2"
@@ -84,7 +87,7 @@
             class="popup__input popup__input_type_title"
             id="place-name"
             type="text"
-            name="profile-title"
+            name="name"
             placeholder="Название"
             required
             minlength="2"
@@ -95,7 +98,7 @@
             class="popup__input popup__input_type_link"
             id="image-link"
             type="url"
-            name="profile-link"
+            name="link"
             placeholder="Ссылка на картинку"
             required
           />
@@ -135,8 +138,5 @@
         </div>
       </article>
     </template>
-    <!-- <script src="./scripts/Card.js"></script>
-  <script src="./scripts/FormValidator.js"></script> -->
-    <script type="module" src="./scripts/index.js"></script>
   </body>
 </html>
