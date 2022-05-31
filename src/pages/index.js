@@ -2,77 +2,157 @@ import "./index.css";
 
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
-import { initialCards } from "../utils/data.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
+import Api from "../components/Api.js";
+import PopupWithConfirm from "../components/PopupWithConfirm.js";
 import {
   validationConfig,
-  profileInfoTitle,
-  prorifleInfoSubtitle,
   profileFormElement,
   newPlaceFormElement,
+  avatarFormElement,
   nameInput,
   jobInput,
   profileButton,
   profileAddButton,
+  avatarEditButton,
+  cardSaveBtn,
+  baseUrl,
+  apiToken,
 } from "../utils/const.js";
 
-// обьект User info
-const userData = new UserInfo({
-  name: profileInfoTitle,
-  job: prorifleInfoSubtitle,
+// Api
+const api = new Api({
+  baseUrl,
+  headers: {
+    authorization: apiToken,
+    "Content-Type": "application/json",
+  },
 });
 
-// секция Card list
-const cardList = new Section(
-  {
-    items: initialCards,
-    renderer: (item) => {
-      cardList.addItem(createCardElement(item, ".element-template"));
-    },
-  },
-  ".elements"
-);
+// User info object
+const userData = new UserInfo({
+  nameSelector: ".profile__info-title",
+  jobSelector: ".profile__info-subtitle",
+  avatarSelector: ".profile__avatar",
+});
+
 // Popup with card image preview
 const cardPreviewPopup = new PopupWithImage(".popup_zoom");
 
 // Popup with card add form
-const cardAddPopup = new PopupWithForm(".popup_add", (e, item) => {
-  e.preventDefault();
-  cardList.addItem(createCardElement(item, ".element-template"));
-  cardAddPopup.close();
-  cardFromValidator.resetValidator();
+const cardAddPopup = new PopupWithForm(".popup_add", (item) => {
+  cardAddPopup.renderLoading(true);
+  api
+    .postCard(item)
+    .then((card) => {
+      cardList.addItem(createCardElement(card, ".element-template"));
+      cardAddPopup.close();
+      cardFromValidator.resetValidator();
+    })
+    .catch((err) => console.error(err))
+    .finally(() => {
+      cardAddPopup.renderLoading(false);
+      cardSaveBtn.value = "Создать";
+    });
 });
 
+// Popup with card delete confirm
+const cardDeletePopup = new PopupWithConfirm(".popup_delete-confirm");
+
 // Popup with user profile edit form
-const profileEditPopup = new PopupWithForm(".popup_profile", (e, data) => {
-  e.preventDefault();
-  userData.setUserInfo(data);
-  profileEditPopup.close();
+const profileEditPopup = new PopupWithForm(".popup_profile", (data) => {
+  profileEditPopup.renderLoading(true);
+  api
+    .editUserData({ name: data.name, about: data.job })
+    .then((user) => editUserInfo(user))
+    .catch((err) => console.error(err))
+    .finally(() => profileEditPopup.renderLoading(false));
+});
+
+// Popup with user avatar edit form
+const avatarEditPopup = new PopupWithForm(".popup_avatar", ({ link }) => {
+  avatarEditPopup.renderLoading(true);
+  api
+    .editUserAvatar(link)
+    .then((user) => {
+      userData.setUserAvatar(user.avatar);
+      avatarEditPopup.close();
+      renderApiData();
+    })
+    .catch((err) => console.error(err))
+    .finally(() => avatarEditPopup.renderLoading(false));
 });
 
 // Form validators
-const profileFromValidator = new FormValidator(
-  validationConfig,
-  profileFormElement
-);
-const cardFromValidator = new FormValidator(
-  validationConfig,
-  newPlaceFormElement
-);
+const profileFromValidator = new FormValidator(validationConfig, profileFormElement);
+const cardFromValidator = new FormValidator(validationConfig, newPlaceFormElement);
+const avatarFromValidator = new FormValidator(validationConfig, avatarFormElement);
 
 // Functions
+// Rendering user data and cards from the API
+let cardList;
+const renderApiData = function () {
+  Promise.all([api.getUserData(), api.getInitialCards()])
+    .then(([user, cardsArr]) => {
+      renderUserInfo(user);
+      cardList = new Section(
+        {
+          items: cardsArr,
+          renderer: (card) => {
+            cardList.addItem(createCardElement(card, ".element-template"));
+          },
+        },
+        ".elements"
+      );
+      cardList.renderElements();
+    })
+    .catch((err) => console.error(`Что-то пошло не так: (${err})`));
+};
+
+const renderUserInfo = function (user) {
+  userData.setUserInfo({ name: user.name, job: user.about }).setUserAvatar(user.avatar).setUserId(user._id);
+};
+
+const editUserInfo = function (user) {
+  userData.setUserInfo({ name: user.name, job: user.about });
+  profileEditPopup.close();
+};
+
 const createCardElement = function (data, cardSelector) {
-  return new Card(data, cardSelector, () =>
-    cardPreviewPopup.open(data)
-  ).createCard();
+  const card = new Card(
+    {
+      data: { ...data, userId: userData.getUserId() },
+      handleCardClick: () => cardPreviewPopup.open(data),
+      handleLikeClick: (isLiked, id) =>
+        api
+          .likeCard(isLiked, id)
+          .then((cardData) => card.toggleLike(cardData))
+          .catch((err) => console.error(err)),
+      handleDeleteClick: (cardId) => {
+        cardDeletePopup.open().setSubmit(() => {
+          cardDeletePopup.renderLoading(true);
+          api
+            .deleteCard(cardId)
+            .then(() => {
+              card.deleteCard(cardId);
+              cardDeletePopup.close();
+            })
+            .catch((err) => console.error(err))
+            .finally(() => cardDeletePopup.renderLoading(false));
+        });
+      },
+    },
+    cardSelector
+  );
+
+  return card.createCard();
 };
 
 const handleOpenProfilePopup = function () {
   const user = userData.getUserInfo();
-  console.log(user);
   nameInput.value = user.name;
   jobInput.value = user.job;
   profileFromValidator.resetValidator();
@@ -81,16 +161,21 @@ const handleOpenProfilePopup = function () {
 
 const registerOpenPopupEventsListeners = function () {
   profileButton.addEventListener("click", handleOpenProfilePopup);
+  avatarEditButton.addEventListener("click", () => avatarEditPopup.open());
   profileAddButton.addEventListener("click", () => cardAddPopup.open());
 };
 
 const init = function () {
+  renderApiData();
   registerOpenPopupEventsListeners();
-  cardList.renderElements();
   cardPreviewPopup.setEventListeners();
   cardAddPopup.setEventListeners();
+  cardDeletePopup.setEventListeners();
   profileEditPopup.setEventListeners();
-  profileFromValidator.enableValidation();
+  avatarEditPopup.setEventListeners();
   cardFromValidator.enableValidation();
+  profileFromValidator.enableValidation();
+  avatarFromValidator.enableValidation();
 };
+
 init();
