@@ -8,20 +8,7 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
 import PopupWithConfirm from "../components/PopupWithConfirm.js";
-import {
-  validationConfig,
-  profileFormElement,
-  newPlaceFormElement,
-  avatarFormElement,
-  nameInput,
-  jobInput,
-  profileButton,
-  profileAddButton,
-  avatarEditButton,
-  cardSaveBtn,
-  baseUrl,
-  apiToken,
-} from "../utils/const.js";
+import { validationConfig, profileFormElement, newPlaceFormElement, avatarFormElement, nameInput, jobInput, profileButton, profileAddButton, avatarEditButton, baseUrl, apiToken } from "../utils/const.js";
 
 // Api
 const api = new Api({
@@ -50,12 +37,10 @@ const cardAddPopup = new PopupWithForm(".popup_add", (item) => {
     .then((card) => {
       cardList.addItem(createCardElement(card, ".element-template"));
       cardAddPopup.close();
-      cardFromValidator.resetValidator();
     })
     .catch((err) => console.error(err))
     .finally(() => {
-      cardAddPopup.renderLoading(false);
-      cardSaveBtn.value = "Создать";
+      cardAddPopup.renderLoading(false, "Создать");
     });
 });
 
@@ -69,7 +54,7 @@ const profileEditPopup = new PopupWithForm(".popup_profile", (data) => {
     .editUserData({ name: data.name, about: data.job })
     .then((user) => editUserInfo(user))
     .catch((err) => console.error(err))
-    .finally(() => profileEditPopup.renderLoading(false));
+    .finally(() => profileEditPopup.renderLoading(false, "Сохранить"));
 });
 
 // Popup with user avatar edit form
@@ -80,10 +65,12 @@ const avatarEditPopup = new PopupWithForm(".popup_avatar", ({ link }) => {
     .then((user) => {
       userData.setUserAvatar(user.avatar);
       avatarEditPopup.close();
-      renderApiData();
+      api.getUserData().then((data) => renderUserInfo(data));
     })
     .catch((err) => console.error(err))
-    .finally(() => avatarEditPopup.renderLoading(false));
+    .finally(() => {
+      avatarEditPopup.renderLoading(false, "Сохранить");
+    });
 });
 
 // Form validators
@@ -161,8 +148,14 @@ const handleOpenProfilePopup = function () {
 
 const registerOpenPopupEventsListeners = function () {
   profileButton.addEventListener("click", handleOpenProfilePopup);
-  avatarEditButton.addEventListener("click", () => avatarEditPopup.open());
-  profileAddButton.addEventListener("click", () => cardAddPopup.open());
+  avatarEditButton.addEventListener("click", () => {
+    avatarEditPopup.open();
+    avatarFromValidator.resetValidator();
+  });
+  profileAddButton.addEventListener("click", () => {
+    cardAddPopup.open();
+    cardFromValidator.resetValidator();
+  });
 };
 
 const init = function () {

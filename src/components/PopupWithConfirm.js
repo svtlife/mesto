@@ -10,7 +10,6 @@ export default class PopupWithConfirm extends Popup {
   renderLoading(isLoading) {
     this._saveButton.disabled = isLoading ? true : false;
     this._saveButton.textContent = isLoading ? "Удаление..." : "Да";
-    isLoading ? this._saveButton.classList.add("popup__button_disabled") : this._saveButton.classList.remove("popup__button_disabled");
   }
 
   setSubmit(submitCallback) {
