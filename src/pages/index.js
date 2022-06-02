@@ -65,7 +65,7 @@ const avatarEditPopup = new PopupWithForm(".popup_avatar", ({ link }) => {
     .then((user) => {
       userData.setUserAvatar(user.avatar);
       avatarEditPopup.close();
-      api.getUserData().then((data) => renderUserInfo(data));
+      /* api.getUserData().then((data) => renderUserInfo(data)); */
     })
     .catch((err) => console.error(err))
     .finally(() => {
