@@ -1,6 +1,6 @@
 # **Проект: Mesto**
 
-### [Ссылка на проекта в GitHub Pages](https://svtlife.github.io/mesto/)
+### [Ссылка на проект в GitHub Pages](https://svtlife.github.io/mesto/)
 
 ---
 
