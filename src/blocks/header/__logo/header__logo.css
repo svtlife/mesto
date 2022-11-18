@@ -2,6 +2,7 @@
   max-width: 142px;
   max-height: 33px;
   margin-bottom: 40px;
+  font-size: 32px;
 }
 
 @media screen and (max-width: 950px) {
@@ -10,5 +11,6 @@
     max-height: 25px;
     padding-left: 27px;
     margin-bottom: 30.6px;
+    font-size: 25px;
   }
 }
